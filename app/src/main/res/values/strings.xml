@@ -2,14 +2,8 @@
 <resources>
     <string name="app_name">Decomp</string>
     <string name="decomp_title">Decompiled Analysis</string>
-    <string name="decompiled_title">Decompiled: %s</string>
-    <string name="copy_tab">Copy Current Tab</string>
+    <string name="analyzing">Analyzing...</string>
+    <string name="initializing">Initializing...</string>
     <string name="no_file">No .so file selected</string>
-    <string name="app_crashed">App Crashed</string>
-    <string name="copy_log">Copy Log</string>
-    <string name="back_to_main">Back to Main</string>
-    <string name="log_copied">Log copied</string>
-    <string name="select_so_file">Please select a .so file</string>
-    <string name="copied_tab">Copied tab!</string>
     <string name="error_prefix">Error: %s</string>
 </resources>

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.22.1)
 
+set(R2_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../jniLibs/arm64-v8a")
+
 add_library(decomp SHARED decomp.cpp)
 
 target_include_directories(decomp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -40,4 +42,9 @@ target_link_libraries(decomp
     r_cons
     r_io
     r_flag
+)
+
+set_target_properties(decomp PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
 )
