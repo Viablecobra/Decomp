@@ -1,10 +1,14 @@
 package com.vcx.decomp;
 
 import android.app.Activity;
+import android.content.ClipboardManager;
+import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DecompiledActivity extends Activity {
 
@@ -22,7 +26,8 @@ public class DecompiledActivity extends Activity {
         setContentView(R.layout.activity_decompiled);
 
         TextView title = findViewById(R.id.tvTitle);
-        TextView code  = findViewById(R.id.tvCode);
+        TextView code = findViewById(R.id.tvCode);
+        Button btnCopy = findViewById(R.id.btnCopy);
 
         String uriString = getIntent().getStringExtra(EXTRA_SO_URI);
         if (uriString != null) {
@@ -32,6 +37,13 @@ public class DecompiledActivity extends Activity {
             try {
                 String decompiled = nativeDecompile(uriString);
                 code.setText(decompiled);
+                
+                btnCopy.setOnClickListener(v -> {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("Decomp", decompiled);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(this, "Copied!", Toast.LENGTH_SHORT).show();
+                });
             } catch (Exception e) {
                 code.setText("Native error: " + e.getMessage());
             }
