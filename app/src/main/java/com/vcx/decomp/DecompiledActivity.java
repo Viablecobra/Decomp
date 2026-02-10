@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import androidx.viewpager2.widget.ViewPager2;
-import androidx.viewpager2.widget.TabLayoutMediator;
 
 public class DecompiledActivity extends Activity {
 
@@ -57,8 +57,7 @@ public class DecompiledActivity extends Activity {
                     Toast.makeText(this, "Copied tab!", Toast.LENGTH_SHORT).show();
                 });
             } catch (Exception e) {
-                TextView code = findViewById(R.id.tvCode);
-                code.setText("Native error: " + e.getMessage());
+                title.setText("Error: " + e.getMessage());
             }
         } else {
             title.setText("No file");

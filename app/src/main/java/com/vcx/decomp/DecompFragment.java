@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
+import android.graphics.Typeface;
 
 public class DecompFragment extends Fragment {
     private static final String ARG_CONTENT = "content";
@@ -23,13 +24,12 @@ public class DecompFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ScrollView scrollView = new ScrollView(requireContext());
         TextView textView = new TextView(requireContext());
-        textView.setId(android.R.id.text1);
         textView.setLayoutParams(new ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setTextColor(0xFFFFFFFF);
         textView.setTextSize(12);
-        textView.setTypeface(null, android.graphics.Typeface.MONOSPACE);
+        textView.setTypeface(Typeface.MONOSPACE);
         textView.setPadding(32, 32, 32, 32);
         textView.setLineSpacing(8, 1);
         if (getArguments() != null) {
