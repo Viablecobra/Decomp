@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000000"
-    android:padding="16dp">
+    android:background="#000000">
 
     <TextView
         android:id="@+id/tvTitle"
@@ -14,30 +14,32 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:paddingBottom="8dp" />
+        android:padding="16dp"
+        android:gravity="center" />
 
-    <ScrollView
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:tabTextColor="#CCCCCC"
+        app:tabSelectedTextColor="#FFFFFF"
+        app:tabIndicatorColor="#FFFFFF"
+        app:tabMode="scrollable" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/tvCode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:typeface="monospace"
-            android:fontFamily="monospace"
-            android:padding="8dp"
-            android:lineSpacingExtra="2dp" />
-    </ScrollView>
+        android:layout_weight="1"
+        android:layout_margin="8dp" />
 
     <Button
         android:id="@+id/btnCopy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Copy Output"
-        android:layout_marginTop="8dp" />
+        android:text="Copy Current Tab"
+        android:layout_margin="8dp"
+        android:backgroundTint="#4CAF50" />
 
 </LinearLayout>

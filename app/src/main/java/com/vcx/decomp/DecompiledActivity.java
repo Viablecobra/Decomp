@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager2.widget.ViewPager2;
+import androidx.viewpager2.widget.TabLayoutMediator;
 
 public class DecompiledActivity extends Activity {
 
@@ -18,7 +21,7 @@ public class DecompiledActivity extends Activity {
         System.loadLibrary("decomp");
     }
 
-    private native String nativeDecompile(String soPath);
+    private native String[] nativeDecompile(String soPath);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,8 @@ public class DecompiledActivity extends Activity {
         setContentView(R.layout.activity_decompiled);
 
         TextView title = findViewById(R.id.tvTitle);
-        TextView code = findViewById(R.id.tvCode);
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        ViewPager2 viewPager = findViewById(R.id.viewPager);
         Button btnCopy = findViewById(R.id.btnCopy);
 
         String uriString = getIntent().getStringExtra(EXTRA_SO_URI);
@@ -35,21 +39,29 @@ public class DecompiledActivity extends Activity {
             title.setText("Decompiled: " + soUri.getLastPathSegment());
             
             try {
-                String decompiled = nativeDecompile(uriString);
-                code.setText(decompiled);
+                String[] tabs = nativeDecompile(uriString);
                 
+                DecompPagerAdapter adapter = new DecompPagerAdapter(this, tabs);
+                viewPager.setAdapter(adapter);
+                
+                new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+                    tab.setText(tabs[position * 2]);
+                }).attach();
+
                 btnCopy.setOnClickListener(v -> {
+                    int pos = viewPager.getCurrentItem();
+                    String currentText = tabs[(pos * 2) + 1];
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("Decomp", decompiled);
+                    ClipData clip = ClipData.newPlainText("Decomp", currentText);
                     clipboard.setPrimaryClip(clip);
-                    Toast.makeText(this, "Copied!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Copied tab!", Toast.LENGTH_SHORT).show();
                 });
             } catch (Exception e) {
+                TextView code = findViewById(R.id.tvCode);
                 code.setText("Native error: " + e.getMessage());
             }
         } else {
             title.setText("No file");
-            code.setText("// Select a .so file first");
         }
     }
 
