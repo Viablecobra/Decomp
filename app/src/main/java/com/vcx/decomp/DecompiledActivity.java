@@ -1,6 +1,6 @@
 package com.vcx.decomp;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import androidx.viewpager2.widget.ViewPager2;
 
-public class DecompiledActivity extends Activity {
+public class DecompiledActivity extends AppCompatActivity {
 
     public static final String EXTRA_SO_URI = "extra_so_uri";
 
