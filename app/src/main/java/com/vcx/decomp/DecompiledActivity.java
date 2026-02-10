@@ -1,6 +1,7 @@
 package com.vcx.decomp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -38,5 +39,11 @@ public class DecompiledActivity extends Activity {
             title.setText("No file");
             code.setText("// Select a .so file first");
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
     }
 }
