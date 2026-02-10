@@ -2,14 +2,13 @@ package com.vcx.decomp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class DecompPagerAdapter extends FragmentStateAdapter {
     private final String[] tabs;
 
     public DecompPagerAdapter(AppCompatActivity activity, String[] tabs) {
-        super(activity.getSupportFragmentManager(), Lifecycle.State.STARTED);
+        super(activity.getSupportFragmentManager(), activity.getLifecycle());
         this.tabs = tabs;
     }
 
