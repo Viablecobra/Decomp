@@ -10,7 +10,7 @@ public class DecompPagerAdapter extends FragmentStateAdapter {
     private final String[] tabs;
 
     public DecompPagerAdapter(Activity activity, String[] tabs) {
-        super(activity.getFragmentManager(), Lifecycle.State.STARTED);
+        super(activity.getSupportFragmentManager(), Lifecycle.State.STARTED);
         this.tabs = tabs;
     }
 
