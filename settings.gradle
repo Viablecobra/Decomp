@@ -1,3 +1,9 @@
+plugins {
+    id 'com.android.application' version '8.2.0' apply false
+    id 'com.android.library' version '8.2.0' apply false
+    id 'com.chaquo.python' version '16.1.0' apply false
+}
+
 pluginManagement {
     repositories {
         google()
@@ -16,9 +22,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Decomp"
 include ':app'
-
-plugins {
-    id 'com.android.application' version '8.2.0' apply false
-    id 'com.android.library' version '8.2.0' apply false
-    id 'com.chaquo.python' version '16.1.0' apply false
-}
