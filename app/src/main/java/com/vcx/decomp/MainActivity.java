@@ -1,6 +1,8 @@
 package com.vcx.decomp;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,6 +11,7 @@ import android.provider.DocumentsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 
 public class MainActivity extends Activity {
 
@@ -16,16 +19,33 @@ public class MainActivity extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+            String crashLog = android.util.Log.getStackTraceString(throwable);
+            
+            new AlertDialog.Builder(this)
+                .setTitle(R.string.app_crashed)
+                .setMessage(crashLog.substring(0, Math.min(500, crashLog.length())) + "...")
+                .setPositiveButton(R.string.copy_log, (dialog, which) -> {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("JNI Crash Log", crashLog);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(this, R.string.log_copied, Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton(R.string.back_to_main, (dialog, which) -> {
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finishAffinity();
+                })
+                .setCancelable(false)
+                .show();
+        });
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Button btnSelectSo = (Button) findViewById(R.id.btnSelectSo);
-        btnSelectSo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openSoFilePicker();
-            }
-        });
+        btnSelectSo.setOnClickListener(v -> openSoFilePicker());
     }
 
     private void openSoFilePicker() {
@@ -44,9 +64,12 @@ public class MainActivity extends Activity {
             if (uri != null && isSoFile(uri)) {
                 getContentResolver().takePersistableUriPermission(
                     uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                Toast.makeText(this, "Selected: " + getFileName(uri), Toast.LENGTH_LONG).show();
+
+                Intent viewIntent = new Intent(this, DecompiledActivity.class);
+                viewIntent.putExtra(DecompiledActivity.EXTRA_SO_URI, uri.toString());
+                startActivity(viewIntent);
             } else {
-                Toast.makeText(this, "Please select a .so file", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.select_so_file, Toast.LENGTH_SHORT).show();
             }
         }
     }
