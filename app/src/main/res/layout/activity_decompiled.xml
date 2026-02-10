@@ -16,14 +16,28 @@
         android:textStyle="bold"
         android:paddingBottom="8dp" />
 
-    <TextView
-        android:id="@+id/tvCode"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        android:typeface="monospace"
-        android:padding="8dp"
-        android:scrollbars="vertical" />
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tvCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:typeface="monospace"
+            android:fontFamily="monospace"
+            android:padding="8dp"
+            android:lineSpacingExtra="2dp" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnCopy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Copy Output"
+        android:layout_marginTop="8dp" />
+
 </LinearLayout>
