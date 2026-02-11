@@ -43,7 +43,7 @@ android {
     chaquopy {
         defaultConfig {
             pip {
-            install "r2pipe==1.9.6"
+            install "git+https://github.com/radareorg/r2pipe.git"
         }
         }
     }
