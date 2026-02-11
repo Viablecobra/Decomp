@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ANDROID_NDK_VERSION: 27.0.12077973
-      JAVA_HOME: /usr/lib/jvm/java-21-openjdk-amd64
 
     steps:
       - name: Checkout code
@@ -34,10 +33,10 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Clean Gradle Cache
+      - name: Clean Gradle & Run Gradle Clean
         run: |
-          rm -rf ~/.gradle/caches/
-          rm -rf ~/.cache/chaquopy/
+          rm -rf ~/.gradle/caches/ ~/.cache/chaquopy/
+          ./gradlew clean --no-daemon || true
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
