@@ -43,9 +43,8 @@ android {
     chaquopy {
         defaultConfig {
             pip {
-    indexUrls 'https://chaquo.com/pypi-13.1'
-    install "r2pipe"
-}
+            install "r2pipe==1.9.6"
+        }
         }
     }
 }
