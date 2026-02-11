@@ -52,7 +52,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/chaquopy
-          key: ${{ runner.os }}-chaquopy-16.1-${{ hashFiles('app/build.gradle') }}
+          key: ${{ runner.os }}-chaquopy-16.0-${{ hashFiles('app/build.gradle') }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
