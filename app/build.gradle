@@ -42,9 +42,7 @@ android {
 
     chaquopy {
         defaultConfig {
-            pip {
-            install "./r2pipe-source"
-        }
+            pip {}
         }
     }
 }
