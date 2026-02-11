@@ -1,13 +1,11 @@
 name: Build Debug APK
 
 on:
-  workflow_dispatch:
-    inputs:
-      create_debug:
-        description: 'Create Debug apk'
-        required: false
-        default: false
-        type: boolean
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
 jobs:
   debug-build:
     runs-on: ubuntu-latest
