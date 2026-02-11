@@ -1,6 +1,4 @@
-LICENSE
 MANIFEST.in
-README.md
 setup.cfg
 setup.py
 r2pipe/__init__.py

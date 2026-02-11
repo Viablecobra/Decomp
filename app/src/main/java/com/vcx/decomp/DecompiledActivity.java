@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
-import com.chaquo.python.PyObject;
+import com.chaquo.python.android.PythonCallback;
 import org.json.JSONObject;
 
 public class DecompiledActivity extends AppCompatActivity {
@@ -58,8 +59,13 @@ public class DecompiledActivity extends AppCompatActivity {
         tvTitle.setText(getString(R.string.decomp_title) + ": " + Uri.parse(soPath).getLastPathSegment());
         tvStatus.setText(R.string.initializing);
         
-        Python.getInstance().getModule("analyzer").callAttrAsync("ida_analyze", soPath, 
-    (PyObject[] args) -> mainHandler.post(() -> onProgressUpdate(args[0].toString())));
+        Python.getInstance().getModule("analyzer").callAttrAsync("ida_analyze", soPath,
+            new PythonCallback() {
+                @Override
+                public void onResponse(String response) {
+                    mainHandler.post(() -> onProgressUpdate(response));
+                }
+            });
     }
 
     private void onProgressUpdate(String jsonStr) {
