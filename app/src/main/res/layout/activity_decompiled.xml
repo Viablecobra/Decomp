@@ -26,7 +26,7 @@
 
         <ProgressBar
             android:id="@+id/progressIndicator"
-            style="?android:attr/progressBarStyle"
+            style="?android:attr/progressBarStyleLarge"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:indeterminateTint="#FFFFFF"/>
@@ -40,23 +40,25 @@
             android:textColor="#FFFFFF"
             android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/tvProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="0%"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-
     </LinearLayout>
 
-    <WebView
-        android:id="@+id/webViewResult"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:visibility="gone"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:background="#1A1A1A"
+        android:elevation="8dp"
+        android:visibility="gone"
+        app:itemRippleColor="#33FFFFFF"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/decomp_tabs"/>
 
 </LinearLayout>
