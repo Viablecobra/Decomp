@@ -9,6 +9,7 @@ add_subdirectory(r2)
 add_library(bridge SHARED bridge.cpp)
 target_include_directories(bridge PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/python3.14
 )
 target_link_libraries(bridge
     ${log-lib}
