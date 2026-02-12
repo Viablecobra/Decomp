@@ -9,28 +9,28 @@ target_include_directories(decomp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 find_library(log-lib log)
 
 add_library(r_core SHARED IMPORTED)
-set_target_properties(r_core PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_core.so")
+set_target_properties(r_core PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_core.so.6.0.8")
 
 add_library(r_util SHARED IMPORTED)
-set_target_properties(r_util PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_util.so")
+set_target_properties(r_util PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_util.so.6.0.8")
 
 add_library(r_bin SHARED IMPORTED)
-set_target_properties(r_bin PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_bin.so")
+set_target_properties(r_bin PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_bin.so.6.0.8")
 
 add_library(r_asm SHARED IMPORTED)
-set_target_properties(r_asm PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_asm.so")
+set_target_properties(r_asm PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_asm.so.6.0.8")
 
 add_library(r_anal SHARED IMPORTED)
-set_target_properties(r_anal PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_anal.so")
+set_target_properties(r_anal PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_anal.so.6.0.8")
 
 add_library(r_cons SHARED IMPORTED)
-set_target_properties(r_cons PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_cons.so")
+set_target_properties(r_cons PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_cons.so.6.0.8")
 
 add_library(r_io SHARED IMPORTED)
-set_target_properties(r_io PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_io.so")
+set_target_properties(r_io PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_io.so.6.0.8")
 
 add_library(r_flag SHARED IMPORTED)
-set_target_properties(r_flag PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_flag.so")
+set_target_properties(r_flag PROPERTIES IMPORTED_LOCATION "${R2_LIB_DIR}/libr_flag.so.6.0.8")
 
 target_link_libraries(decomp
     ${log-lib}
