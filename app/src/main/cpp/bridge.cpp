@@ -1,5 +1,5 @@
 #include <jni.h>
-#include <python3.11/Python.h>
+#include <Python.h>
 #include <android/log.h>
 
 #define LOG_TAG "DecompBridge"
@@ -9,7 +9,12 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_vcx_decomp_DecompiledActivity_nativeStartAnalysis(JNIEnv *env, jobject thiz, jstring so_path) {
     const char* path = env->GetStringUTFChars(so_path, 0);
     
-    Py_Initialize();
+    if (Py_Initialize()) {
+        LOGI("Python init failed");
+        env->ReleaseStringUTFChars(so_path, path);
+        return;
+    }
+    
     PyRun_SimpleString("import sys; sys.path.append('/data/user/0/com.vcx.decomp/files/python')");
     
     PyObject *pModule = PyImport_ImportModule("analyzer");
@@ -19,7 +24,10 @@ Java_com_vcx_decomp_DecompiledActivity_nativeStartAnalysis(JNIEnv *env, jobject 
             PyObject *pArgs = PyTuple_New(1);
             PyTuple_SetItem(pArgs, 0, PyUnicode_FromString(path));
             PyObject_CallObject(pFunc, pArgs);
+            Py_DECREF(pArgs);
         }
+        Py_DECREF(pFunc);
+        Py_DECREF(pModule);
     }
     
     Py_Finalize();
