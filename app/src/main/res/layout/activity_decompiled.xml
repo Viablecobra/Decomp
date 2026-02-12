@@ -24,14 +24,12 @@
         android:gravity="center"
         android:padding="40dp">
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
+        <ProgressBar
             android:id="@+id/progressIndicator"
-            style="@style/Widget.Material3.CircularProgressIndicator.Indeterminate"
+            style="?android:attr/progressBarStyle"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:indeterminateTint="#FFFFFF"
-            app:indicatorSize="80dp"
-            app:trackThickness="6dp"/>
+            android:indeterminateTint="#FFFFFF"/>
 
         <TextView
             android:id="@+id/tvStatus"
