@@ -9,7 +9,8 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_vcx_decomp_DecompiledActivity_nativeStartAnalysis(JNIEnv *env, jobject thiz, jstring so_path) {
     const char* path = env->GetStringUTFChars(so_path, 0);
     
-    if (Py_Initialize()) {
+    Py_Initialize();
+    if (!Py_IsInitialized()) {
         LOGI("Python init failed");
         env->ReleaseStringUTFChars(so_path, path);
         return;
