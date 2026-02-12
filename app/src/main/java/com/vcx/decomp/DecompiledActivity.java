@@ -149,8 +149,7 @@ public class DecompiledActivity extends AppCompatActivity {
                 if (jsonData.startsWith("[")) {
                     dataArray = new JSONArray(jsonData);
                 } else {
-                    dataLines = jsonData.split("
-");
+                    dataLines = jsonData.split(System.lineSeparator());
                 }
             } catch (Exception e) {
                 dataLines = new String[]{"Parse error"};
@@ -162,6 +161,7 @@ public class DecompiledActivity extends AppCompatActivity {
             TextView tv = new TextView(parent.getContext());
             tv.setPadding(32, 32, 16, 32);
             tv.setTextSize(12);
+            tv.setTextColor(0xFFFFFFFF);
             tv.setBackgroundColor(0xFF1A1A1A);
             return new ViewHolder(tv);
         }
