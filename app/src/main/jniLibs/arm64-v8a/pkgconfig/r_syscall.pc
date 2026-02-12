@@ -1,0 +1,11 @@
+prefix=/data/data/org.radare.radare2installer/radare2
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: r_syscall
+Description: The UNIX-like reverse engineering toolkit
+Version: 6.0.8
+Requires: r_util
+Cflags: -I${includedir}/libr
+Libs: -L${libdir} -lr_syscall -ldl
