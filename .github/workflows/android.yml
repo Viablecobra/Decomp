@@ -33,6 +33,11 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Download Python ARM64 Android
+        run: |
+          wget https://www.python.org/ftp/python/3.14.3/python-3.14.3-aarch64-linux-android.tar.gz
+          tar -xzf python-3.14.3-aarch64-linux-android.tar.gz -C $GITHUB_WORKSPACE
+
       - name: Clean Gradle & CMake Cache
         run: |
           rm -rf ~/.gradle/caches/ ~/.cache/chaquopy/
