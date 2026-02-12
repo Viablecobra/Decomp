@@ -27,17 +27,17 @@
         android:orderInCategory="5"/>
     <item
         android:id="@+id/tab_pseudo"
-        android:icon="@android:drawable/ic_menu_code"
+        android:icon="@android:drawable/ic_menu_gallery"
         android:title="Pseudo C"
         android:orderInCategory="6"/>
     <item
         android:id="@+id/tab_imports"
-        android:icon="@android:drawable/ic_menu_inbox"
+        android:icon="@android:drawable/ic_menu_directions"
         android:title="Imports"
         android:orderInCategory="7"/>
     <item
         android:id="@+id/tab_exports"
-        android:icon="@android:drawable/ic_menu_outbox"
+        android:icon="@android:drawable/ic_menu_upload"
         android:title="Exports"
         android:orderInCategory="8"/>
 </menu>
