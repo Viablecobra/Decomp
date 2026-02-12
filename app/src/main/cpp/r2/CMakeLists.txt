@@ -47,4 +47,5 @@ target_link_libraries(decomp
 set_target_properties(decomp PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
+    LINK_DEPENDS "${R2_LIB_DIR}/libr_core.so.6.0.8;${R2_LIB_DIR}/libr_util.so.6.0.8;${R2_LIB_DIR}/libr_bin.so.6.0.8;${R2_LIB_DIR}/libr_asm.so.6.0.8;${R2_LIB_DIR}/libr_anal.so.6.0.8;${R2_LIB_DIR}/libr_cons.so.6.0.8;${R2_LIB_DIR}/libr_io.so.6.0.8;${R2_LIB_DIR}/libr_flag.so.6.0.8"
 )
