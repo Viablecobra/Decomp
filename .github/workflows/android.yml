@@ -39,6 +39,12 @@ jobs:
           rm -rf app/.cxx/ app/build/intermediates/
           ./gradlew clean --no-daemon || true
 
+      - name: Verify radare2 libraries
+        run: |
+          echo "Checking jniLibs..."
+          ls -lah app/src/main/jniLibs/arm64-v8a/ || echo "jniLibs not found!"
+          file app/src/main/jniLibs/arm64-v8a/libr_core.so.6.0.8 || echo "File missing!"
+
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
         with:
