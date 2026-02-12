@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Decomp</string>
+    <string name="app_crashed">App Crashed</string>
+    <string name="copy_log">Copy Log</string>
+    <string name="log_copied">Log copied to clipboard</string>
+    <string name="back_to_main">Back to Main</string>
+    <string name="select_so_file">Please select a .so file</string>
     <string name="decomp_title">Decompiled Analysis</string>
     <string name="analyzing">Analyzing...</string>
     <string name="initializing">Initializing...</string>

@@ -9,17 +9,17 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.chaquo.python.Python;
+import com.chaquo.python.PyObject;
 import com.chaquo.python.android.AndroidPlatform;
-import com.chaquo.python.android.PythonCallback;
 import org.json.JSONObject;
 
 public class DecompiledActivity extends AppCompatActivity {
     public static final String EXTRA_SO_URI = "extra_so_uri";
 
-    private CircularProgressIndicator progressIndicator;
+    private ProgressBar progressIndicator;
     private TextView tvTitle, tvStatus, tvProgress;
     private WebView webViewResult;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -59,31 +59,28 @@ public class DecompiledActivity extends AppCompatActivity {
         tvTitle.setText(getString(R.string.decomp_title) + ": " + Uri.parse(soPath).getLastPathSegment());
         tvStatus.setText(R.string.initializing);
         
-        Python.getInstance().getModule("analyzer").callAttrAsync("ida_analyze", soPath,
-            new PythonCallback() {
-                @Override
-                public void onResponse(String response) {
-                    mainHandler.post(() -> onProgressUpdate(response));
-                }
-            });
-    }
-
-    private void onProgressUpdate(String jsonStr) {
-        try {
-            JSONObject data = new JSONObject(jsonStr);
-            int progress = data.getInt("progress");
-            tvStatus.setText(data.getString("status"));
-            tvProgress.setText(progress + "%");
-            
-            if (data.optBoolean("done", false)) {
-                String html = data.getString("html");
-                webViewResult.loadData(html, "text/html", "UTF-8");
-                progressIndicator.setVisibility(View.GONE);
-                webViewResult.setVisibility(View.VISIBLE);
+        new Thread(() -> {
+            try {
+                Python py = Python.getInstance();
+                PyObject analyzer = py.getModule("analyzer");
+                PyObject result = analyzer.callAttr("ida_analyze", soPath);
+                
+                mainHandler.post(() -> {
+                    try {
+                        String html = result.toString();
+                        webViewResult.loadData(html, "text/html", "UTF-8");
+                        progressIndicator.setVisibility(View.GONE);
+                        tvStatus.setVisibility(View.GONE);
+                        tvProgress.setVisibility(View.GONE);
+                        webViewResult.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+                        tvStatus.setText(getString(R.string.error_prefix, e.getMessage()));
+                    }
+                });
+            } catch (Exception e) {
+                mainHandler.post(() -> tvStatus.setText(getString(R.string.error_prefix, e.getMessage())));
             }
-        } catch (Exception e) {
-            tvStatus.setText(getString(R.string.error_prefix) + e.getMessage());
-        }
+        }).start();
     }
 
     @Override
