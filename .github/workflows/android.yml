@@ -33,9 +33,10 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Clean Gradle & Run Gradle Clean
+      - name: Clean Gradle & CMake Cache
         run: |
           rm -rf ~/.gradle/caches/ ~/.cache/chaquopy/
+          rm -rf app/.cxx/ app/build/intermediates/
           ./gradlew clean --no-daemon || true
 
       - name: Cache Gradle dependencies
