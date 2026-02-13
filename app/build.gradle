@@ -6,6 +6,12 @@ plugins {
 android {
     namespace 'com.vcx.decomp'
     compileSdk 34
+    
+    sourceSets {
+        main {
+            jniLibs.srcDirs += ['src/main/jniLibs']
+        }
+    }
 
     defaultConfig {
         applicationId "com.vcx.decomp"
