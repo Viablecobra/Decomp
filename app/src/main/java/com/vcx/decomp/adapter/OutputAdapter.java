@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class OutputAdapter extends RecyclerView.Adapter<OutputAdapter.ViewHolder> {

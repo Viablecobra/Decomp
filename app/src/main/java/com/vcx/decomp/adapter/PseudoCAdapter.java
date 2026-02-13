@@ -3,6 +3,7 @@ package com.vcx.decomp.adapter;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.ViewGroup;
+import android.view.View;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 

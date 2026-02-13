@@ -3,6 +3,7 @@ package com.vcx.decomp.adapter;
 import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONObject;

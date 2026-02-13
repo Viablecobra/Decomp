@@ -33,11 +33,11 @@ No warnings</string>
     <string name="configure_tabs">Configure Tabs</string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
-    <string name="string_format">[%s] "%s"</string>
-    <string name="function_format">%s | Addr: %s | Size: %s</string>
-    <string name="export_format">%s @ %s</string>
-    <string name="xref_format">%s → %s (%s)</string>
-    <string name="import_format">%s ← %s</string>
-    <string name="name_format">%s @ %s</string>
-    <string name="overview_format">%s: %s</string>
+    <string name="string_format" formatted="false">[%s] "%s"</string>
+    <string name="function_format" formatted="false">%s | Addr: %s | Size: %s</string>
+    <string name="export_format" formatted="false">%s @ %s</string>
+    <string name="xref_format" formatted="false">%s → %s (%s)</string>
+    <string name="import_format" formatted="false">%s ← %s</string>
+    <string name="name_format" formatted="false">%s @ %s</string>
+    <string name="overview_format" formatted="false">%s: %s</string>
 </resources>
