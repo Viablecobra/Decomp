@@ -50,8 +50,8 @@ public class DecompiledActivity extends AppCompatActivity {
         AdapterType topType, bottomType;
         DecompData(String t, String top, String bot, AdapterType topT, AdapterType botT) { 
             title = t; 
-            topData = top; 
-            bottomData = bot;
+            topData = top != null ? top : ""; 
+            bottomData = bot != null ? bot : "";
             topType = topT;
             bottomType = botT;
         }
@@ -107,7 +107,8 @@ public class DecompiledActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.apply, (dialog, which) -> {
             saveTabVisibility();
             updateBottomNav();
-            recreate();
+            finish();
+            startActivity(getIntent());
         });
         builder.setNegativeButton(R.string.cancel, null);
         builder.show();
@@ -155,13 +156,13 @@ public class DecompiledActivity extends AppCompatActivity {
         if (tabVisible.getOrDefault(R.id.tab_overview, true)) 
             visibleTabs.add(new DecompData(getString(R.string.tab_overview), nativeResult[1], "", AdapterType.OVERVIEW, AdapterType.NONE));
         if (tabVisible.getOrDefault(R.id.tab_code, true)) 
-            visibleTabs.add(new DecompData("Code", nativeResult[3], nativeResult[11], AdapterType.FUNCTIONS, AdapterType.PSEUDOC));
+            visibleTabs.add(new DecompData("Code", nativeResult[3] != null ? nativeResult[3] : "", nativeResult[11] != null ? nativeResult[11] : "", AdapterType.FUNCTIONS, AdapterType.PSEUDOC));
         if (tabVisible.getOrDefault(R.id.tab_symbols, true)) 
-            visibleTabs.add(new DecompData("Symbols", nativeResult[5], nativeResult[9], AdapterType.XREFS, AdapterType.NAMES));
+            visibleTabs.add(new DecompData("Symbols", nativeResult[5] != null ? nativeResult[5] : "", nativeResult[9] != null ? nativeResult[9] : "", AdapterType.XREFS, AdapterType.NAMES));
         if (tabVisible.getOrDefault(R.id.tab_data, true)) 
-            visibleTabs.add(new DecompData("Data", nativeResult[7], nativeResult[13], AdapterType.STRINGS, AdapterType.IMPORTS));
+            visibleTabs.add(new DecompData("Data", nativeResult[7] != null ? nativeResult[7] : "", nativeResult[13] != null ? nativeResult[13] : "", AdapterType.STRINGS, AdapterType.IMPORTS));
         if (tabVisible.getOrDefault(R.id.tab_output, true)) 
-            visibleTabs.add(new DecompData(getString(R.string.tab_output), nativeResult[15], getString(R.string.analysis_complete), AdapterType.EXPORTS, AdapterType.OUTPUT));
+            visibleTabs.add(new DecompData(getString(R.string.tab_output), nativeResult[15] != null ? nativeResult[15] : "", getString(R.string.analysis_complete), AdapterType.EXPORTS, AdapterType.OUTPUT));
         
         tabsData = visibleTabs.toArray(new DecompData[0]);
         viewPager.setAdapter(new FragmentAdapter(this));
@@ -232,6 +233,11 @@ public class DecompiledActivity extends AppCompatActivity {
             
             int position = getArguments().getInt(ARG_POSITION);
             DecompiledActivity activity = (DecompiledActivity) requireActivity();
+            if (activity.getTabsData() == null || position >= activity.getTabsData().length) {
+                recyclerTop.setAdapter(new com.vcx.decomp.adapter.OverviewAdapter("[]"));
+                recyclerBottom.setAdapter(new com.vcx.decomp.adapter.OverviewAdapter("[]"));
+                return view;
+            }
             DecompData data = activity.getTabsData()[position];
             
             recyclerTop.setAdapter(getAdapterForType(data.topType, data.topData));
@@ -242,16 +248,16 @@ public class DecompiledActivity extends AppCompatActivity {
 
         private RecyclerView.Adapter getAdapterForType(AdapterType type, String data) {
             switch (type) {
-                case FUNCTIONS: return new com.vcx.decomp.adapter.FunctionsAdapter(data);
-                case PSEUDOC: return new com.vcx.decomp.adapter.PseudoCAdapter(data);
-                case XREFS: return new com.vcx.decomp.adapter.XRefsAdapter(data);
-                case NAMES: return new com.vcx.decomp.adapter.NamesAdapter(data);
-                case STRINGS: return new com.vcx.decomp.adapter.StringsAdapter(data);
-                case IMPORTS: return new com.vcx.decomp.adapter.ImportsAdapter(data);
-                case EXPORTS: return new com.vcx.decomp.adapter.ExportsAdapter(data);
-                case OUTPUT: return new com.vcx.decomp.adapter.OutputAdapter(data);
-                case OVERVIEW: return new com.vcx.decomp.adapter.OverviewAdapter(data);
-                default: return new com.vcx.decomp.adapter.OverviewAdapter("");
+                case FUNCTIONS: return new com.vcx.decomp.adapter.FunctionsAdapter(data != null ? data : "[]");
+                case PSEUDOC: return new com.vcx.decomp.adapter.PseudoCAdapter(data != null ? data : "");
+                case XREFS: return new com.vcx.decomp.adapter.XRefsAdapter(data != null ? data : "[]");
+                case NAMES: return new com.vcx.decomp.adapter.NamesAdapter(data != null ? data : "[]");
+                case STRINGS: return new com.vcx.decomp.adapter.StringsAdapter(data != null ? data : "[]");
+                case IMPORTS: return new com.vcx.decomp.adapter.ImportsAdapter(data != null ? data : "[]");
+                case EXPORTS: return new com.vcx.decomp.adapter.ExportsAdapter(data != null ? data : "[]");
+                case OUTPUT: return new com.vcx.decomp.adapter.OutputAdapter(data != null ? data : "");
+                case OVERVIEW: return new com.vcx.decomp.adapter.OverviewAdapter(data != null ? data : "[]");
+                default: return new com.vcx.decomp.adapter.OverviewAdapter("[]");
             }
         }
     }

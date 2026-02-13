@@ -1,21 +1,24 @@
 package com.vcx.decomp.adapter;
 
 import android.content.Context;
-import android.view.ViewGroup;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
+import com.vcx.decomp.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.vcx.decomp.R;
 
 public class XRefsAdapter extends RecyclerView.Adapter<XRefsAdapter.ViewHolder> {
     private JSONArray xrefs;
 
     public XRefsAdapter(String jsonData) {
         try {
-            xrefs = new JSONArray(jsonData);
+            if (jsonData == null || jsonData.trim().isEmpty()) {
+                xrefs = new JSONArray();
+            } else {
+                xrefs = new JSONArray(jsonData);
+            }
         } catch (Exception e) {
             xrefs = new JSONArray();
         }

@@ -2,9 +2,9 @@ package com.vcx.decomp.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vcx.decomp.R;
@@ -13,7 +13,7 @@ public class OutputAdapter extends RecyclerView.Adapter<OutputAdapter.ViewHolder
     private String[] logLines;
 
     public OutputAdapter(String logData) {
-        if (logData == null || logData.isEmpty()) {
+        if (logData == null || logData.trim().isEmpty()) {
             logLines = new String[]{"No output"};
         } else {
             logLines = logData.split(System.lineSeparator());

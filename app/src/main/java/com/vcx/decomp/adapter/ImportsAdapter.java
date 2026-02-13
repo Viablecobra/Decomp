@@ -1,21 +1,24 @@
 package com.vcx.decomp.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
+import com.vcx.decomp.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.vcx.decomp.R;
 
 public class ImportsAdapter extends RecyclerView.Adapter<ImportsAdapter.ViewHolder> {
     private JSONArray imports;
 
     public ImportsAdapter(String jsonData) {
         try {
-            imports = new JSONArray(jsonData);
+            if (jsonData == null || jsonData.trim().isEmpty()) {
+                imports = new JSONArray();
+            } else {
+                imports = new JSONArray(jsonData);
+            }
         } catch (Exception e) {
             imports = new JSONArray();
         }

@@ -14,7 +14,7 @@
     <string name="decompiling_file">Decompiling: %s</string>
     <string name="open">Open</string>
     <string name="save">Save</string>
-    <string name="config">Config</string>
+    <string name="config">view</string>
     <string name="analysis_complete">Analysis complete
 No warnings</string>
     <string name="parse_error">Parse error</string>

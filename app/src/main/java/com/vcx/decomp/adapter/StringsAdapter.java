@@ -1,21 +1,24 @@
 package com.vcx.decomp.adapter;
 
 import android.content.Context;
-import android.view.ViewGroup;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
+import com.vcx.decomp.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.vcx.decomp.R;
 
 public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHolder> {
     private JSONArray strings;
 
     public StringsAdapter(String jsonData) {
         try {
-            strings = new JSONArray(jsonData);
+            if (jsonData == null || jsonData.trim().isEmpty()) {
+                strings = new JSONArray();
+            } else {
+                strings = new JSONArray(jsonData);
+            }
         } catch (Exception e) {
             strings = new JSONArray();
         }
@@ -35,9 +38,9 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         try {
-            JSONObject str = strings.getJSONObject(position);
-            String value = str.optString("string", "");
-            String addr = str.optString("vaddr", "");
+            JSONObject strObj = strings.getJSONObject(position);
+            String value = strObj.optString("string", "");
+            String addr = strObj.optString("vaddr", "");
             Context context = holder.itemView.getContext();
             holder.textView.setText(context.getString(R.string.string_format, addr, value));
         } catch (Exception e) {

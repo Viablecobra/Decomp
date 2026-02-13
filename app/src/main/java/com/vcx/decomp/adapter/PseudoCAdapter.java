@@ -2,8 +2,8 @@ package com.vcx.decomp.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.view.ViewGroup;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,7 +13,11 @@ public class PseudoCAdapter extends RecyclerView.Adapter<PseudoCAdapter.ViewHold
     private String[] codeLines;
 
     public PseudoCAdapter(String pseudoC) {
-        codeLines = pseudoC.split(System.lineSeparator());
+        if (pseudoC == null || pseudoC.trim().isEmpty()) {
+            codeLines = new String[]{"No Pseudo C available"};
+        } else {
+            codeLines = pseudoC.split(System.lineSeparator());
+        }
     }
 
     @Override
