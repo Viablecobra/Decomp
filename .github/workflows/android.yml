@@ -9,8 +9,6 @@ on:
 jobs:
   debug-build:
     runs-on: ubuntu-latest
-    env:
-      ANDROID_NDK_VERSION: 27.0.12077973
 
     steps:
       - name: Checkout code
@@ -32,14 +30,17 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        
+      - name: List NDK versions
+        run: ls -la $ANDROID_HOME/ndk/
 
       - name: Copy libc++_shared.so from NDK
         run: |
-          NDK_PATH=$ANDROID_HOME/ndk/${{ env.ANDROID_NDK_VERSION }}
+          NDK_PATH=$(ls -d $ANDROID_HOME/ndk/* | head -1)
           mkdir -p app/src/main/jniLibs/arm64-v8a
           cp $NDK_PATH/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so \
              app/src/main/jniLibs/arm64-v8a/
-          echo "Copied libc++_shared.so from $NDK_PATH"
+          echo "Copied from $NDK_PATH"
 
       - name: Download Python ARM64 Android
         run: |
