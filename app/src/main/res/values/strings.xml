@@ -1,4 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Decomp</string>
+    <string name="app_crashed">App Crashed</string>
+    <string name="copy_log">Copy Log</string>
+    <string name="log_copied">Log copied to clipboard</string>
+    <string name="back_to_main">Back to Main</string>
+    <string name="select_so_file">Please select a .so file</string>
+    <string name="decomp_title">Decompiled Analysis</string>
+    <string name="analyzing">Analyzing...</string>
+    <string name="initializing">Initializing...</string>
+    <string name="no_file">No .so file selected</string>
+    <string name="error_prefix">Error: %s</string>
+    <string name="decompiling_file">Decompiling: %s</string>
+    <string name="open">Open</string>
+    <string name="save">Save</string>
+    <string name="config">view</string>
+    <string name="analysis_complete">Analysis complete
+No warnings</string>
+    <string name="parse_error">Parse error</string>
+    <string name="tab_overview">Overview</string>
+    <string name="tab_functions">Functions</string>
+    <string name="tab_xrefs">XRefs</string>
+    <string name="tab_strings">Strings</string>
+    <string name="tab_names">Names</string>
+    <string name="tab_pseudoc">Pseudo C</string>
+    <string name="tab_imports">Imports</string>
+    <string name="tab_exports">Exports</string>
+    <string name="tab_code">Code</string>
+    <string name="tab_symbols">Symbols</string>
+    <string name="tab_data">Data</string>
+    <string name="tab_output">Output</string>
+    <string name="configure_tabs">Configure Tabs</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+    <string name="string_format" formatted="false">[%s] "%s"</string>
+    <string name="function_format" formatted="false">%s | Addr: %s | Size: %s</string>
+    <string name="export_format" formatted="false">%s @ %s</string>
+    <string name="xref_format" formatted="false">%s → %s (%s)</string>
+    <string name="import_format" formatted="false">%s ← %s</string>
+    <string name="name_format" formatted="false">%s @ %s</string>
+    <string name="overview_format" formatted="false">%s: %s</string>
 </resources>
