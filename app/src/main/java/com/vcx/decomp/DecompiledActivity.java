@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -23,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class DecompiledActivity extends AppCompatActivity {
     public static final String EXTRA_SO_URI = "extra_so_uri";
@@ -38,12 +38,10 @@ public class DecompiledActivity extends AppCompatActivity {
     private Map<Integer, Boolean> tabVisible = new HashMap<>();
 
     private final int[] TAB_IDS = {R.id.tab_overview, R.id.tab_funcs, R.id.tab_xrefs, R.id.tab_strings, 
-                                   R.id.tab_names, R.id.tab_pseudoc, R.id.tab_imports, R.id.tab_exports, 
+                                   R.id.tab_names, R.id.tab_pseudo, R.id.tab_imports, R.id.tab_exports, 
                                    R.id.tab_overview2, R.id.tab_output};
-    private final String[] TAB_KEYS = {"overview", "funcs", "xrefs", "strings", "names", "pseudoc", 
+    private final String[] TAB_KEYS = {"overview", "funcs", "xrefs", "strings", "names", "pseudo", 
                                        "imports", "exports", "overview2", "output"};
-    private final String[] TAB_NAMES = {"Overview", "Functions", "XRefs", "Strings", "Names", 
-                                        "Pseudo C", "Imports", "Exports", "Overview2", "Output"};
 
     private static class DecompData {
         String title, jsonData;
@@ -72,8 +70,8 @@ public class DecompiledActivity extends AppCompatActivity {
         loadTabVisibility();
         
         btnConfig.setOnClickListener(v -> showTabConfigDialog());
-        btnOpen.setOnClickListener(v -> tvStatus.setText("Open clicked"));
-        btnSave.setOnClickListener(v -> tvStatus.setText("Save clicked"));
+        btnOpen.setOnClickListener(v -> tvStatus.setText(R.string.open));
+        btnSave.setOnClickListener(v -> tvStatus.setText(R.string.save));
     }
 
     private void loadTabVisibility() {
@@ -85,23 +83,24 @@ public class DecompiledActivity extends AppCompatActivity {
 
     private void showTabConfigDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Configure 10 Tabs");
+        builder.setTitle(R.string.configure_tabs);
         
-        boolean[] checked = new boolean[TAB_NAMES.length];
-        for (int i = 0; i < TAB_NAMES.length; i++) {
+        String[] tabNames = getResources().getStringArray(R.array.tab_names);
+        boolean[] checked = new boolean[TAB_IDS.length];
+        for (int i = 0; i < TAB_IDS.length; i++) {
             checked[i] = tabVisible.get(TAB_IDS[i]);
         }
         
-        builder.setMultiChoiceItems(TAB_NAMES, checked, (dialog, which, isChecked) -> {
+        builder.setMultiChoiceItems(tabNames, checked, (dialog, which, isChecked) -> {
             tabVisible.put(TAB_IDS[which], isChecked);
         });
         
-        builder.setPositiveButton("Apply", (dialog, which) -> {
+        builder.setPositiveButton(R.string.apply, (dialog, which) -> {
             saveTabVisibility();
             updateBottomNav();
             recreate();
         });
-        builder.setNegativeButton("Cancel", null);
+        builder.setNegativeButton(R.string.cancel, null);
         builder.show();
     }
 
@@ -123,12 +122,12 @@ public class DecompiledActivity extends AppCompatActivity {
     private void startAnalysis() {
         String soPath = getIntent().getStringExtra(EXTRA_SO_URI);
         if (soPath == null) {
-            tvTitle.setText("No file selected");
+            tvTitle.setText(R.string.no_file);
             return;
         }
 
-        tvTitle.setText("Decompiling: " + Uri.parse(soPath).getLastPathSegment());
-        tvStatus.setText("Analyzing...");
+        tvTitle.setText(getString(R.string.decompiling_file, Uri.parse(soPath).getLastPathSegment()));
+        tvStatus.setText(R.string.analyzing);
         
         new Thread(() -> {
             String[] result = nativeDecompile(soPath);
@@ -144,17 +143,16 @@ public class DecompiledActivity extends AppCompatActivity {
 
     private void setupTabs(String[] nativeResult) {
         List<DecompData> visibleTabs = new ArrayList<>();
-        if (tabVisible.getOrDefault(R.id.tab_overview, true)) visibleTabs.add(new DecompData("Overview", nativeResult[1]));
-        if (tabVisible.getOrDefault(R.id.tab_funcs, true)) visibleTabs.add(new DecompData("Functions", nativeResult[3]));
-        if (tabVisible.getOrDefault(R.id.tab_xrefs, true)) visibleTabs.add(new DecompData("XRefs", nativeResult[5]));
-        if (tabVisible.getOrDefault(R.id.tab_strings, true)) visibleTabs.add(new DecompData("Strings", nativeResult[7]));
-        if (tabVisible.getOrDefault(R.id.tab_names, true)) visibleTabs.add(new DecompData("Names", nativeResult[9]));
-        if (tabVisible.getOrDefault(R.id.tab_pseudoc, true)) visibleTabs.add(new DecompData("Pseudo C", nativeResult[11]));
-        if (tabVisible.getOrDefault(R.id.tab_imports, true)) visibleTabs.add(new DecompData("Imports", nativeResult[13]));
-        if (tabVisible.getOrDefault(R.id.tab_exports, true)) visibleTabs.add(new DecompData("Exports", nativeResult[15]));
-        if (tabVisible.getOrDefault(R.id.tab_overview2, false)) visibleTabs.add(new DecompData("Overview2", nativeResult[1]));
-        if (tabVisible.getOrDefault(R.id.tab_output, true)) visibleTabs.add(new DecompData("Output", "Analysis complete
-No warnings"));
+        if (tabVisible.getOrDefault(R.id.tab_overview, true)) visibleTabs.add(new DecompData(getString(R.string.tab_overview), nativeResult[1]));
+        if (tabVisible.getOrDefault(R.id.tab_funcs, true)) visibleTabs.add(new DecompData(getString(R.string.tab_functions), nativeResult[3]));
+        if (tabVisible.getOrDefault(R.id.tab_xrefs, true)) visibleTabs.add(new DecompData(getString(R.string.tab_xrefs), nativeResult[5]));
+        if (tabVisible.getOrDefault(R.id.tab_strings, true)) visibleTabs.add(new DecompData(getString(R.string.tab_strings), nativeResult[7]));
+        if (tabVisible.getOrDefault(R.id.tab_names, true)) visibleTabs.add(new DecompData(getString(R.string.tab_names), nativeResult[9]));
+        if (tabVisible.getOrDefault(R.id.tab_pseudo, true)) visibleTabs.add(new DecompData(getString(R.string.tab_pseudoc), nativeResult[11]));
+        if (tabVisible.getOrDefault(R.id.tab_imports, true)) visibleTabs.add(new DecompData(getString(R.string.tab_imports), nativeResult[13]));
+        if (tabVisible.getOrDefault(R.id.tab_exports, true)) visibleTabs.add(new DecompData(getString(R.string.tab_exports), nativeResult[15]));
+        if (tabVisible.getOrDefault(R.id.tab_overview2, false)) visibleTabs.add(new DecompData(getString(R.string.tab_overview2), nativeResult[1]));
+        if (tabVisible.getOrDefault(R.id.tab_output, true)) visibleTabs.add(new DecompData(getString(R.string.tab_output), getString(R.string.analysis_complete)));
         
         tabsData = visibleTabs.toArray(new DecompData[0]);
         viewPager.setAdapter(new FragmentAdapter(this));
@@ -162,7 +160,7 @@ No warnings"));
         bottomNav.setOnItemSelectedListener(item -> {
             for (int i = 0; i < TAB_IDS.length; i++) {
                 if (item.getItemId() == TAB_IDS[i] && tabVisible.get(TAB_IDS[i])) {
-                    viewPager.setCurrentItem(findTabIndex(TAB_IDS[i]));
+                    viewPager.setCurrentItem(findVisibleTabIndex(TAB_IDS[i]));
                     return true;
                 }
             }
@@ -170,13 +168,11 @@ No warnings"));
         });
     }
 
-    private int findTabIndex(int tabId) {
-        for (int i = 0; i < tabsData.length; i++) {
-            if (tabVisible.get(tabId)) {
-                for (int j = 0; j < TAB_IDS.length; j++) {
-                    if (TAB_IDS[j] == tabId) return i++;
-                }
-            }
+    private int findVisibleTabIndex(int tabId) {
+        int index = 0;
+        for (int i = 0; i < TAB_IDS.length; i++) {
+            if (TAB_IDS[i] == tabId) return index;
+            if (tabVisible.getOrDefault(TAB_IDS[i], false)) index++;
         }
         return 0;
     }
@@ -189,7 +185,7 @@ No warnings"));
         System.loadLibrary("decomp");
     }
 
-    private static class FragmentAdapter extends FragmentStateAdapter {
+    private class FragmentAdapter extends FragmentStateAdapter {
         FragmentAdapter(AppCompatActivity activity) {
             super(activity);
         }
@@ -208,7 +204,6 @@ No warnings"));
     public static class DecompFragment extends Fragment {
         private static final String ARG_POSITION = "position";
         private RecyclerView recyclerView;
-        private DecompAdapter adapter;
 
         public static DecompFragment newInstance(int position) {
             DecompFragment fragment = new DecompFragment();
@@ -224,7 +219,7 @@ No warnings"));
             recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
             int position = getArguments().getInt(ARG_POSITION);
             DecompiledActivity activity = (DecompiledActivity) requireActivity();
-            adapter = new DecompAdapter(activity.getTabsData()[position].jsonData);
+            DecompAdapter adapter = new DecompAdapter(activity.getTabsData()[position].jsonData);
             recyclerView.setAdapter(adapter);
             return recyclerView;
         }

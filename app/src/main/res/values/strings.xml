@@ -11,4 +11,24 @@
     <string name="initializing">Initializing...</string>
     <string name="no_file">No .so file selected</string>
     <string name="error_prefix">Error: %s</string>
+    <string name="decompiling_file">Decompiling: %s</string>
+    <string name="open">Open</string>
+    <string name="save">Save</string>
+    <string name="config">Config</string>
+    <string name="analysis_complete">Analysis complete
+No warnings</string>
+    <string name="parse_error">Parse error</string>
+    <string name="tab_overview">Overview</string>
+    <string name="tab_functions">Functions</string>
+    <string name="tab_xrefs">XRefs</string>
+    <string name="tab_strings">Strings</string>
+    <string name="tab_names">Names</string>
+    <string name="tab_pseudoc">Pseudo C</string>
+    <string name="tab_imports">Imports</string>
+    <string name="tab_exports">Exports</string>
+    <string name="tab_overview2">Overview2</string>
+    <string name="tab_output">Output</string>
+    <string name="configure_tabs">Configure 10 Tabs</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
 </resources>
