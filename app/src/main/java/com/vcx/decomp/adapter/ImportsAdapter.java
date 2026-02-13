@@ -1,5 +1,6 @@
 package com.vcx.decomp.adapter;
 
+import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,8 @@ public class ImportsAdapter extends RecyclerView.Adapter<ImportsAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView tv = new TextView(parent.getContext());
+        Context context = parent.getContext();
+        TextView tv = new TextView(context);
         tv.setPadding(32, 20, 32, 20);
         tv.setTextSize(12);
         tv.setTextColor(0xFFFF8800);
@@ -33,7 +35,8 @@ public class ImportsAdapter extends RecyclerView.Adapter<ImportsAdapter.ViewHold
             JSONObject imp = imports.getJSONObject(position);
             String name = imp.optString("name", "");
             String lib = imp.optString("libname", "");
-            holder.textView.setText(String.format("%s ← %s", name, lib));
+            Context context = holder.itemView.getContext();
+            holder.textView.setText(context.getString(R.string.import_format, name, lib));
         } catch (Exception e) {
             holder.textView.setText("Error at position " + position);
         }

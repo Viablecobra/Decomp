@@ -1,5 +1,6 @@
 package com.vcx.decomp.adapter;
 
+import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,8 @@ public class FunctionsAdapter extends RecyclerView.Adapter<FunctionsAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView tv = new TextView(parent.getContext());
+        Context context = parent.getContext();
+        TextView tv = new TextView(context);
         tv.setPadding(32, 24, 32, 24);
         tv.setTextSize(13);
         tv.setTextColor(0xFFFFFFFF);
@@ -34,8 +36,8 @@ public class FunctionsAdapter extends RecyclerView.Adapter<FunctionsAdapter.View
             String name = func.optString("name", "unknown");
             String addr = func.optString("addr", "");
             String size = func.optString("size", "");
-            holder.textView.setText(String.format("%s
-Addr: %s | Size: %s", name, addr, size));
+            Context context = holder.itemView.getContext();
+            holder.textView.setText(context.getString(R.string.function_format, name, addr, size));
         } catch (Exception e) {
             holder.textView.setText("Error at position " + position);
         }

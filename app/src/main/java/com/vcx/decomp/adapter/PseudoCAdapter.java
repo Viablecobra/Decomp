@@ -1,5 +1,7 @@
 package com.vcx.decomp.adapter;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,18 +10,18 @@ public class PseudoCAdapter extends RecyclerView.Adapter<PseudoCAdapter.ViewHold
     private String[] codeLines;
 
     public PseudoCAdapter(String pseudoC) {
-        codeLines = pseudoC.split("
-");
+        codeLines = pseudoC.split(System.lineSeparator());
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView tv = new TextView(parent.getContext());
+        Context context = parent.getContext();
+        TextView tv = new TextView(context);
         tv.setPadding(32, 16, 32, 16);
         tv.setTextSize(11);
         tv.setTextColor(0xFF00FF00);
         tv.setBackgroundColor(0xFF0A0A0A);
-        tv.setTypeface(android.graphics.Typeface.MONOSPACE);
+        tv.setTypeface(Typeface.MONOSPACE);
         return new ViewHolder(tv);
     }
 

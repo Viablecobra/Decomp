@@ -1,5 +1,6 @@
 package com.vcx.decomp.adapter;
 
+import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,8 @@ public class XRefsAdapter extends RecyclerView.Adapter<XRefsAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView tv = new TextView(parent.getContext());
+        Context context = parent.getContext();
+        TextView tv = new TextView(context);
         tv.setPadding(32, 20, 32, 20);
         tv.setTextSize(12);
         tv.setTextColor(0xFF00FFFF);
@@ -34,7 +36,8 @@ public class XRefsAdapter extends RecyclerView.Adapter<XRefsAdapter.ViewHolder> 
             String from = xref.optString("from", "");
             String to = xref.optString("to", "");
             String type = xref.optString("type", "");
-            holder.textView.setText(String.format("%s → %s (%s)", from, to, type));
+            Context context = holder.itemView.getContext();
+            holder.textView.setText(context.getString(R.string.xref_format, from, to, type));
         } catch (Exception e) {
             holder.textView.setText("Error at position " + position);
         }

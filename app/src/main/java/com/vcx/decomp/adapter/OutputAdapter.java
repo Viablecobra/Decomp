@@ -1,5 +1,7 @@
 package com.vcx.decomp.adapter;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,19 +13,19 @@ public class OutputAdapter extends RecyclerView.Adapter<OutputAdapter.ViewHolder
         if (logData == null || logData.isEmpty()) {
             logLines = new String[]{"No output"};
         } else {
-            logLines = logData.split("
-");
+            logLines = logData.split(System.lineSeparator());
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView tv = new TextView(parent.getContext());
+        Context context = parent.getContext();
+        TextView tv = new TextView(context);
         tv.setPadding(32, 16, 32, 16);
         tv.setTextSize(11);
         tv.setTextColor(0xFFAAAAAA);
         tv.setBackgroundColor(0xFF0A0A0A);
-        tv.setTypeface(android.graphics.Typeface.MONOSPACE);
+        tv.setTypeface(Typeface.MONOSPACE);
         return new ViewHolder(tv);
     }
 
@@ -50,7 +52,7 @@ public class OutputAdapter extends RecyclerView.Adapter<OutputAdapter.ViewHolder
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
-        ViewHolder(android.view.View view) {
+        ViewHolder(View view) {
             super(view);
             textView = (TextView) view;
         }
