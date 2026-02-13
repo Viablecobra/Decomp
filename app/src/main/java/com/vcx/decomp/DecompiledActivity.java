@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.json.JSONArray;
 
 public class DecompiledActivity extends AppCompatActivity {
     public static final String EXTRA_SO_URI = "extra_so_uri";
@@ -37,15 +36,23 @@ public class DecompiledActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private Map<Integer, Boolean> tabVisible = new HashMap<>();
 
-    private final int[] TAB_IDS = {R.id.tab_overview, R.id.tab_funcs, R.id.tab_xrefs, R.id.tab_strings, 
-                                   R.id.tab_names, R.id.tab_pseudo, R.id.tab_imports, R.id.tab_exports, 
-                                   R.id.tab_overview2, R.id.tab_output};
-    private final String[] TAB_KEYS = {"overview", "funcs", "xrefs", "strings", "names", "pseudo", 
-                                       "imports", "exports", "overview2", "output"};
+    private final int[] TAB_IDS = {R.id.tab_overview, R.id.tab_code, R.id.tab_symbols, R.id.tab_data, R.id.tab_output};
+    private final String[] TAB_KEYS = {"overview", "code", "symbols", "data", "output"};
+
+    public enum AdapterType {
+        OVERVIEW, FUNCTIONS, PSEUDOC, XREFS, NAMES, STRINGS, IMPORTS, EXPORTS, OUTPUT, NONE
+    }
 
     private static class DecompData {
-        String title, jsonData;
-        DecompData(String t, String d) { title = t; jsonData = d; }
+        String title, topData, bottomData;
+        AdapterType topType, bottomType;
+        DecompData(String t, String top, String bot, AdapterType topT, AdapterType botT) { 
+            title = t; 
+            topData = top; 
+            bottomData = bot;
+            topType = topT;
+            bottomType = botT;
+        }
     }
 
     @Override
@@ -77,7 +84,7 @@ public class DecompiledActivity extends AppCompatActivity {
     private void loadTabVisibility() {
         tabVisible.clear();
         for (int i = 0; i < TAB_IDS.length; i++) {
-            tabVisible.put(TAB_IDS[i], prefs.getBoolean(TAB_KEYS[i], i < 5));
+            tabVisible.put(TAB_IDS[i], prefs.getBoolean(TAB_KEYS[i], true));
         }
     }
 
@@ -143,16 +150,16 @@ public class DecompiledActivity extends AppCompatActivity {
 
     private void setupTabs(String[] nativeResult) {
         List<DecompData> visibleTabs = new ArrayList<>();
-        if (tabVisible.getOrDefault(R.id.tab_overview, true)) visibleTabs.add(new DecompData(getString(R.string.tab_overview), nativeResult[1]));
-        if (tabVisible.getOrDefault(R.id.tab_funcs, true)) visibleTabs.add(new DecompData(getString(R.string.tab_functions), nativeResult[3]));
-        if (tabVisible.getOrDefault(R.id.tab_xrefs, true)) visibleTabs.add(new DecompData(getString(R.string.tab_xrefs), nativeResult[5]));
-        if (tabVisible.getOrDefault(R.id.tab_strings, true)) visibleTabs.add(new DecompData(getString(R.string.tab_strings), nativeResult[7]));
-        if (tabVisible.getOrDefault(R.id.tab_names, true)) visibleTabs.add(new DecompData(getString(R.string.tab_names), nativeResult[9]));
-        if (tabVisible.getOrDefault(R.id.tab_pseudo, true)) visibleTabs.add(new DecompData(getString(R.string.tab_pseudoc), nativeResult[11]));
-        if (tabVisible.getOrDefault(R.id.tab_imports, true)) visibleTabs.add(new DecompData(getString(R.string.tab_imports), nativeResult[13]));
-        if (tabVisible.getOrDefault(R.id.tab_exports, true)) visibleTabs.add(new DecompData(getString(R.string.tab_exports), nativeResult[15]));
-        if (tabVisible.getOrDefault(R.id.tab_overview2, false)) visibleTabs.add(new DecompData(getString(R.string.tab_overview2), nativeResult[1]));
-        if (tabVisible.getOrDefault(R.id.tab_output, true)) visibleTabs.add(new DecompData(getString(R.string.tab_output), getString(R.string.analysis_complete)));
+        if (tabVisible.getOrDefault(R.id.tab_overview, true)) 
+            visibleTabs.add(new DecompData(getString(R.string.tab_overview), nativeResult[1], "", AdapterType.OVERVIEW, AdapterType.NONE));
+        if (tabVisible.getOrDefault(R.id.tab_code, true)) 
+            visibleTabs.add(new DecompData("Code", nativeResult[3], nativeResult[11], AdapterType.FUNCTIONS, AdapterType.PSEUDOC));
+        if (tabVisible.getOrDefault(R.id.tab_symbols, true)) 
+            visibleTabs.add(new DecompData("Symbols", nativeResult[5], nativeResult[9], AdapterType.XREFS, AdapterType.NAMES));
+        if (tabVisible.getOrDefault(R.id.tab_data, true)) 
+            visibleTabs.add(new DecompData("Data", nativeResult[7], nativeResult[13], AdapterType.STRINGS, AdapterType.IMPORTS));
+        if (tabVisible.getOrDefault(R.id.tab_output, true)) 
+            visibleTabs.add(new DecompData(getString(R.string.tab_output), nativeResult[15], getString(R.string.analysis_complete), AdapterType.EXPORTS, AdapterType.OUTPUT));
         
         tabsData = visibleTabs.toArray(new DecompData[0]);
         viewPager.setAdapter(new FragmentAdapter(this));
@@ -203,7 +210,6 @@ public class DecompiledActivity extends AppCompatActivity {
 
     public static class DecompFragment extends Fragment {
         private static final String ARG_POSITION = "position";
-        private RecyclerView recyclerView;
 
         public static DecompFragment newInstance(int position) {
             DecompFragment fragment = new DecompFragment();
@@ -215,65 +221,35 @@ public class DecompiledActivity extends AppCompatActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            recyclerView = new RecyclerView(requireContext());
-            recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+            View view = inflater.inflate(R.layout.fragment_dual_recycler, container, false);
+            RecyclerView recyclerTop = view.findViewById(R.id.recycler_top);
+            RecyclerView recyclerBottom = view.findViewById(R.id.recycler_bottom);
+            
+            recyclerTop.setLayoutManager(new LinearLayoutManager(requireContext()));
+            recyclerBottom.setLayoutManager(new LinearLayoutManager(requireContext()));
+            
             int position = getArguments().getInt(ARG_POSITION);
             DecompiledActivity activity = (DecompiledActivity) requireActivity();
-            DecompAdapter adapter = new DecompAdapter(activity.getTabsData()[position].jsonData);
-            recyclerView.setAdapter(adapter);
-            return recyclerView;
-        }
-    }
-
-    public static class DecompAdapter extends RecyclerView.Adapter<DecompAdapter.ViewHolder> {
-        private JSONArray dataArray;
-        private String[] dataLines;
-
-        DecompAdapter(String jsonData) {
-            try {
-                if (jsonData.startsWith("[")) {
-                    dataArray = new JSONArray(jsonData);
-                } else {
-                    dataLines = jsonData.split(System.lineSeparator());
-                }
-            } catch (Exception e) {
-                dataLines = new String[]{"Parse error"};
-            }
+            DecompData data = activity.getTabsData()[position];
+            
+            recyclerTop.setAdapter(getAdapterForType(data.topType, data.topData));
+            recyclerBottom.setAdapter(getAdapterForType(data.bottomType, data.bottomData));
+            
+            return view;
         }
 
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            TextView tv = new TextView(parent.getContext());
-            tv.setPadding(32, 32, 16, 32);
-            tv.setTextSize(12);
-            tv.setTextColor(0xFFFFFFFF);
-            tv.setBackgroundColor(0xFF1A1A1A);
-            return new ViewHolder(tv);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            try {
-                if (dataArray != null && position < dataArray.length()) {
-                    holder.textView.setText(dataArray.getJSONObject(position).toString(2));
-                } else if (dataLines != null && position < dataLines.length) {
-                    holder.textView.setText(dataLines[position]);
-                }
-            } catch (Exception e) {
-                holder.textView.setText("Error at line " + position);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return dataArray != null ? dataArray.length() : (dataLines != null ? dataLines.length : 1);
-        }
-
-        static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView textView;
-            ViewHolder(View view) {
-                super(view);
-                textView = (TextView) view;
+        private RecyclerView.Adapter getAdapterForType(AdapterType type, String data) {
+            switch (type) {
+                case FUNCTIONS: return new com.vcx.decomp.adapter.FunctionsAdapter(data);
+                case PSEUDOC: return new com.vcx.decomp.adapter.PseudoCAdapter(data);
+                case XREFS: return new com.vcx.decomp.adapter.XRefsAdapter(data);
+                case NAMES: return new com.vcx.decomp.adapter.NamesAdapter(data);
+                case STRINGS: return new com.vcx.decomp.adapter.StringsAdapter(data);
+                case IMPORTS: return new com.vcx.decomp.adapter.ImportsAdapter(data);
+                case EXPORTS: return new com.vcx.decomp.adapter.ExportsAdapter(data);
+                case OUTPUT: return new com.vcx.decomp.adapter.OutputAdapter(data);
+                case OVERVIEW: return new com.vcx.decomp.adapter.OverviewAdapter(data);
+                default: return new com.vcx.decomp.adapter.OverviewAdapter("");
             }
         }
     }

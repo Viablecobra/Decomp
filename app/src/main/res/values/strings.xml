@@ -26,9 +26,11 @@ No warnings</string>
     <string name="tab_pseudoc">Pseudo C</string>
     <string name="tab_imports">Imports</string>
     <string name="tab_exports">Exports</string>
-    <string name="tab_overview2">Overview2</string>
+    <string name="tab_code">Code</string>
+    <string name="tab_symbols">Symbols</string>
+    <string name="tab_data">Data</string>
     <string name="tab_output">Output</string>
-    <string name="configure_tabs">Configure 10 Tabs</string>
+    <string name="configure_tabs">Configure Tabs</string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
 </resources>

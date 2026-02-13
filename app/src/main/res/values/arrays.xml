@@ -2,14 +2,9 @@
 <resources>
     <string-array name="tab_names">
         <item>Overview</item>
-        <item>Functions</item>
-        <item>XRefs</item>
-        <item>Strings</item>
-        <item>Names</item>
-        <item>Pseudo C</item>
-        <item>Imports</item>
-        <item>Exports</item>
-        <item>Overview2</item>
+        <item>Code</item>
+        <item>Symbols</item>
+        <item>Data</item>
         <item>Output</item>
     </string-array>
 </resources>

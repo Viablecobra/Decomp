@@ -23,21 +23,24 @@
             android:textStyle="bold"
             android:padding="12dp"/>
 
-        <TextView android:id="@+id/btnOpen" android:text="Open"
+        <TextView android:id="@+id/btnOpen"
+            android:text="@string/open"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
             android:padding="12dp"
             android:clickable="true"
             android:focusable="true"/>
-        <TextView android:id="@+id/btnSave" android:text="Save"
+        <TextView android:id="@+id/btnSave"
+            android:text="@string/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
             android:padding="12dp"
             android:clickable="true"
             android:focusable="true"/>
-        <TextView android:id="@+id/btnConfig" android:text="Config"
+        <TextView android:id="@+id/btnConfig"
+            android:text="@string/config"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
