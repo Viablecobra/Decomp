@@ -40,4 +40,14 @@
         android:icon="@android:drawable/ic_menu_upload"
         android:title="Exports"
         android:orderInCategory="8"/>
+    <item
+        android:id="@+id/tab_overview2"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Overview2"
+        android:orderInCategory="9"/>
+    <item
+        android:id="@+id/tab_output"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="Output"
+        android:orderInCategory="10"/>
 </menu>
