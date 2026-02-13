@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.vcx.decomp.R;
+
 public class PseudoCAdapter extends RecyclerView.Adapter<PseudoCAdapter.ViewHolder> {
     private String[] codeLines;
 

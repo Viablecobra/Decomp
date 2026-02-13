@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.vcx.decomp.R;
+
 public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHolder> {
     private JSONArray overview;
 

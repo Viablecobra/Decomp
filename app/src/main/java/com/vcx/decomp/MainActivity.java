@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
+import com.vcx.decomp.R;
+
 public class MainActivity extends Activity {
 
     private static final int REQUEST_CODE_PICK_SO = 1001;

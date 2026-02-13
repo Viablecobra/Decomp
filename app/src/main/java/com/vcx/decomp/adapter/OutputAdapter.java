@@ -7,6 +7,8 @@ import android.widget.TextView;
 import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.vcx.decomp.R;
+
 public class OutputAdapter extends RecyclerView.Adapter<OutputAdapter.ViewHolder> {
     private String[] logLines;
 

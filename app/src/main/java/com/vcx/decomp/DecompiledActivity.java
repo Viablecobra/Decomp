@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.vcx.decomp.R;
+
 public class DecompiledActivity extends AppCompatActivity {
     public static final String EXTRA_SO_URI = "extra_so_uri";
     
